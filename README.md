@@ -1,6 +1,8 @@
 # PhotoCraft 日本語版（Windows x64）
 
-[日本語版EXEをダウンロード](https://github.com/yeezy-529/Photo/releases/tag/v0.20.1-ja.1)
+[![PhotoCraft 日本語版をダウンロード。画像をクリックして PhotoCraft-JA.exe を保存し、ダブルクリックして起動します。](docs/download-ja.png)](https://github.com/yeezy-529/Photo/releases/download/v0.20.1-ja.1/PhotoCraft-JA.exe)
+
+[EXEを直接ダウンロード](https://github.com/yeezy-529/Photo/releases/download/v0.20.1-ja.1/PhotoCraft-JA.exe) · [リリース情報](https://github.com/yeezy-529/Photo/releases/tag/v0.20.1-ja.1)
 
 このリポジトリは、[storytold/photocraft](https://github.com/storytold/photocraft) をもとに、日本語UIの補完と単体EXE化を行ったものです。EXEをダブルクリックすると、初回に必要ファイルを自動展開して日本語で起動します。自動更新確認は初回設定でOFFです（手動更新機能は残っています）。一部の処理メッセージは英語です。
 
