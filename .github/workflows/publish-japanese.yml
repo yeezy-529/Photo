@@ -1,12 +1,24 @@
 name: Publish Japanese PhotoCraft
 on:
-  workflow_dispatch:
+  push:
+    branches: [japanese-edition]
+    paths: [.github/workflows/publish-japanese.yml]
 permissions:
   contents: write
 jobs:
   publish:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 15
     steps:
-      - name: Await prepared publication manifest
-        run: echo 'Publication inputs are being prepared.'
+      - name: Import reviewed source and publish verified EXE
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          git clone --depth=1 --branch japanese-edition "https://github.com/${GITHUB_REPOSITORY}.git" source
+          cd source
+          if [ ! -f .publish/manifest.json ]; then
+            echo 'One-time publication inputs are no longer present.'
+            exit 0
+          fi
+          python .publish/publish.py
