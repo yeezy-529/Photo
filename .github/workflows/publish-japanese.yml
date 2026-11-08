@@ -1,4 +1,4 @@
-name: Publish Japanese PhotoCraft
+name: Finalize Japanese PhotoCraft release
 on:
   push:
     branches: [japanese-edition]
@@ -6,19 +6,29 @@ on:
 permissions:
   contents: write
 jobs:
-  publish:
+  finalize:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 3
     steps:
-      - name: Import reviewed source and publish verified EXE
+      - name: Verify and normalize release download name
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          set -euo pipefail
-          git clone --depth=1 --branch japanese-edition "https://github.com/${GITHUB_REPOSITORY}.git" source
-          cd source
-          if [ ! -f .publish/manifest.json ]; then
-            echo 'One-time publication inputs are no longer present.'
-            exit 0
-          fi
-          python .publish/publish.py
+          python - <<'PY'
+          import json, os, urllib.request
+          assert os.environ["GITHUB_REPOSITORY"] == "yeezy-529/Photo"
+          base = "https://api.github.com/repos/yeezy-529/Photo"
+          def request(method, url, data=None):
+              body = None if data is None else json.dumps(data).encode()
+              req = urllib.request.Request(url, data=body, method=method, headers={"Authorization": "Bearer " + os.environ["GH_TOKEN"], "Accept": "application/vnd.github+json", "Content-Type": "application/json", "X-GitHub-Api-Version": "2022-11-28"})
+              with urllib.request.urlopen(req, timeout=60) as response:
+                  return json.load(response)
+          release = request("GET", base + "/releases/tags/v0.20.1-ja.1")
+          assert not release["draft"]
+          asset = next(item for item in release["assets"] if item["id"] == 724142098)
+          expected = "sha256:9f596ed3ccc2e396bf037201edf8e18b9f34b7e29a3b84d2d3043f4a52ddac28"
+          assert asset["size"] == 77250560 and asset["digest"] == expected
+          renamed = request("PATCH", base + "/releases/assets/724142098", {"name": "PhotoCraft-JA.exe", "label": "PhotoCraft 日本語版 (Windows x64)"})
+          assert renamed["name"] == "PhotoCraft-JA.exe" and renamed["digest"] == expected
+          print(json.dumps({"name": renamed["name"], "sha256": renamed["digest"], "url": renamed["browser_download_url"]}))
+          PY
