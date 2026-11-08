@@ -6,6 +6,12 @@ code and original assets are MIT OR Apache-2.0 (see [`LICENSE-MIT`](LICENSE-MIT)
 in the same change; third-party assets must be permissively licensed and keep their license file
 next to them.
 
+## Japanese download guide
+
+| Path | Title | Author | Source | License |
+|---|---|---|---|---|
+| `docs/download-ja.png` | Japanese Windows EXE download guide | PhotoCraft Japanese edition contributors | Original illustration | MIT OR Apache-2.0 |
+
 ## Bundled in the app
 
 | Path | Title | Author | Source | License |
