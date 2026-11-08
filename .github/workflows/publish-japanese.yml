@@ -1,0 +1,12 @@
+name: Publish Japanese PhotoCraft
+on:
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Await prepared publication manifest
+        run: echo 'Publication inputs are being prepared.'
